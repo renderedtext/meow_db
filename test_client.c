@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     // Connect to remote server
     if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0)
     {
-        puts("connect error");
+        printf("Connect error: Could not connect to meow://%s:%d\n", ADDRESS, PORT);
         return 1;
     }
 
