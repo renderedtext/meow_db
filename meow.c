@@ -3,19 +3,21 @@
 #include <sys/socket.h>
 #include <arpa/inet.h>
 #include <unistd.h>
+#include <stdlib.h>
 
 const char* ADDRESS = "0.0.0.0";
 const int PORT = 6666;
 
-int main(int argc, char *argv[])
-{
+int run_server() {
     int socket_desc;
     int new_socket;
     int c;
     struct sockaddr_in server;
     struct sockaddr_in client;
+    char *incoming_message;
     char *response_message;
-    char incomming_message[2000];
+    char message_buffer[2000];
+    int message_length;
 
     // Create socket
     socket_desc = socket(AF_INET, SOCK_STREAM, 0);
@@ -51,16 +53,26 @@ int main(int argc, char *argv[])
         printf("\n");
         puts("Connection accepted");
 
-        if(recv(new_socket, incomming_message, 2000, 0) < 0) {
+        message_length = recv(new_socket, message_buffer, 2000, 0);
+
+        if(message_length < 0) {
           puts("Failed to receive message");
         } else {
-          printf("Message received: %s\n", incomming_message);
+          incoming_message = (char*)malloc(message_length + 1);
+
+          memcpy(incoming_message, message_buffer, message_length + 1);
+          incoming_message[message_length] = '\0';
+
+          printf("Message length: %d\n", message_length);
+          printf("Message received: %s\n", incoming_message);
 
           //Reply to the client
           response_message = (char *)("meow!");
           write(new_socket, response_message, strlen(response_message));
 
           printf("Response message: %s\n", response_message);
+
+          free(incoming_message);
         }
     }
 
@@ -71,4 +83,11 @@ int main(int argc, char *argv[])
     }
 
     return 0;
+}
+
+int main(int argc, char *argv[])
+{
+  run_server();
+
+  /* dasa */
 }
