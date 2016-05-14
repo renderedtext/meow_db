@@ -3,22 +3,26 @@
 #include<sys/socket.h>
 #include<arpa/inet.h>
 
+const char* ADDRESS = "0.0.0.0";
+const int PORT = 6666;
+
 int main(int argc, char *argv[])
 {
     int socket_desc;
     struct sockaddr_in server;
-    char *message , server_reply[2000];
+    char *message;
+    char server_reply[2000];
 
-    socket_desc = socket(AF_INET , SOCK_STREAM , 0);
+    socket_desc = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_desc == -1)
     {
         printf("Could not create socket");
         return 1;
     }
 
-    server.sin_addr.s_addr = inet_addr("216.58.214.238");
+    server.sin_addr.s_addr = inet_addr(ADDRESS);
     server.sin_family = AF_INET;
-    server.sin_port = htons( 80 );
+    server.sin_port = htons(PORT);
 
     // Connect to remote server
     if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0)
@@ -30,8 +34,8 @@ int main(int argc, char *argv[])
     puts("Connected\n");
 
     // Send some data
-    message = (char *)("GET / HTTP/1.1\r\n\r\n");
-    if( send(socket_desc , message , strlen(message) , 0) < 0)
+    message = (char *)("EXISTS? meow_key");
+    if(send(socket_desc, message, strlen(message), 0) < 0)
     {
         puts("Send failed");
         return 1;
@@ -39,7 +43,7 @@ int main(int argc, char *argv[])
     puts("Data Send\n");
 
     // Receive a reply from the server
-    if( recv(socket_desc, server_reply , 2000 , 0) < 0)
+    if(recv(socket_desc, server_reply, 2000, 0) < 0)
     {
         puts("recv failed");
     }
