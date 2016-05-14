@@ -1,7 +1,7 @@
-#include<stdio.h>
-#include<string.h>
-#include<sys/socket.h>
-#include<arpa/inet.h>
+#include <stdio.h>
+#include <string.h>
+#include <sys/socket.h>
+#include <arpa/inet.h>
 
 const char* ADDRESS = "0.0.0.0";
 const int PORT = 6666;
