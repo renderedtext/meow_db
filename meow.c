@@ -8,16 +8,23 @@
 const char* ADDRESS = "0.0.0.0";
 const int PORT = 6666;
 
+void handle_incoming_message(char* response, char* message) {
+  sprintf(response, "%s meow!", message);
+}
+
 int run_server() {
     int socket_desc;
     int new_socket;
     int c;
     struct sockaddr_in server;
     struct sockaddr_in client;
+
     char *incoming_message;
-    char *response_message;
-    char message_buffer[2000];
     int message_length;
+
+    char message_buffer[2000];
+    char response_buffer[2000];
+
 
     // Create socket
     socket_desc = socket(AF_INET, SOCK_STREAM, 0);
@@ -63,14 +70,13 @@ int run_server() {
           memcpy(incoming_message, message_buffer, message_length + 1);
           incoming_message[message_length] = '\0';
 
-          printf("Message length: %d\n", message_length);
           printf("Message received: %s\n", incoming_message);
 
           //Reply to the client
-          response_message = (char *)("meow!");
-          write(new_socket, response_message, strlen(response_message));
+          handle_incoming_message(response_buffer, incoming_message);
+          write(new_socket, response_buffer, strlen(response_buffer));
 
-          printf("Response message: %s\n", response_message);
+          printf("Response message: %s\n", response_buffer);
 
           free(incoming_message);
         }
@@ -87,7 +93,5 @@ int run_server() {
 
 int main(int argc, char *argv[])
 {
-  run_server();
-
-  /* dasa */
+  return run_server();
 }
