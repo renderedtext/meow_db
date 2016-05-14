@@ -14,7 +14,8 @@ int main(int argc, char *argv[])
     int c;
     struct sockaddr_in server;
     struct sockaddr_in client;
-    char *message;
+    char *response_message;
+    char incomming_message[2000];
 
     // Create socket
     socket_desc = socket(AF_INET, SOCK_STREAM, 0);
@@ -47,11 +48,20 @@ int main(int argc, char *argv[])
     c = sizeof(struct sockaddr_in);
     while( (new_socket = accept(socket_desc, (struct sockaddr *)&client, (socklen_t*)&c)) )
     {
+        printf("\n");
         puts("Connection accepted");
 
-        //Reply to the client
-        message = (char *)("meow!");
-        write(new_socket, message, strlen(message));
+        if(recv(new_socket, incomming_message, 2000, 0) < 0) {
+          puts("Failed to receive message");
+        } else {
+          printf("Message received: %s\n", incomming_message);
+
+          //Reply to the client
+          response_message = (char *)("meow!");
+          write(new_socket, response_message, strlen(response_message));
+
+          printf("Response message: %s\n", response_message);
+        }
     }
 
     if(new_socket < 0)
