@@ -67,7 +67,7 @@ int meow_server(char* address, int port, void (*handler)(char*, char*)) {
           printf("Message received: %s\n", incoming_message);
 
           // Reply to the client
-          handler(response_buffer, incoming_message);
+          handler(incoming_message, response_buffer);
           write(new_socket, response_buffer, strlen(response_buffer));
 
           printf("Response message: %s\n", response_buffer);
