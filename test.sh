@@ -3,6 +3,15 @@
 rm -rf "build/test"
 mkdir -p "build/test"
 
+./build.sh
+build/meow &
+
+trap 'kill $(jobs -p)' EXIT
+
+sleep 3
+
+echo "================================="
+
 for ctest in "test/*"
 do
   echo "================================="
