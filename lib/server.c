@@ -7,11 +7,11 @@
 
 #include "server.h"
 
-int meow_server(char* address, int port, void (*handler)(char*, char*)) {
+int start_server(MeowServer* server, void (*handler)(MeowServer*, char*, char*)) {
     int socket_desc;
     int new_socket;
     int c;
-    struct sockaddr_in server;
+    struct sockaddr_in tcp_server;
     struct sockaddr_in client;
 
     char *incoming_message;
@@ -24,26 +24,26 @@ int meow_server(char* address, int port, void (*handler)(char*, char*)) {
     socket_desc = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_desc == -1)
     {
-        printf("Could not create socket meow://%s:%d", address, port);
+        printf("Could not create socket meow://%s:%d", server->address, server->port);
         return 1;
     }
 
     //Prepare the sockaddr_in structure
-    server.sin_family = AF_INET;
-    server.sin_addr.s_addr = INADDR_ANY;
-    server.sin_port = htons(port);
+    tcp_server.sin_family = AF_INET;
+    tcp_server.sin_addr.s_addr = INADDR_ANY;
+    tcp_server.sin_port = htons(server->port);
 
     // Bind
-    if(bind(socket_desc, (struct sockaddr *)&server, sizeof(server)) < 0)
+    if(bind(socket_desc, (struct sockaddr *)&tcp_server, sizeof(tcp_server)) < 0)
     {
-        printf("Could not bind to meow://%s:%d", address, port);
+        printf("Could not bind to meow://%s:%d", server->address, server->port);
         return 1;
     }
 
     // Listen
     listen(socket_desc, 3);
 
-    printf("Server is listening on meow://%s:%d\n", address, port);
+    printf("Server is listening on meow://%s:%d\n", server->address, server->port);
 
     // Accept and incoming connection
     puts("Waiting for incoming connections...");
@@ -67,7 +67,7 @@ int meow_server(char* address, int port, void (*handler)(char*, char*)) {
           printf("Message received: %s\n", incoming_message);
 
           // Reply to the client
-          handler(incoming_message, response_buffer);
+          handler(server, incoming_message, response_buffer);
           write(new_socket, response_buffer, strlen(response_buffer));
 
           printf("Response message: %s\n", response_buffer);
