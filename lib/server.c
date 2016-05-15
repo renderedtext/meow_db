@@ -7,12 +7,22 @@
 
 #include "server.h"
 
+void free_data(gpointer data) {
+  printf("freeing: %s %p\n", (char *) data, data);
+  free(data);
+}
+
 MeowServer* init_server(char* address, int port) {
   MeowServer* server = malloc(sizeof(struct meow_server));
 
+  GHashTable* memory_store = g_hash_table_new_full(g_str_hash,  /* Hash function  */
+                                                   g_str_equal, /* Comparator     */
+                                                   free_data,   /* Key destructor */
+                                                   free_data);  /* Val destructor */
+
   server->address = address;
   server->port = port;
-  server->memory_store = NULL;
+  server->memory_store = memory_store;
 
   return server;
 }
