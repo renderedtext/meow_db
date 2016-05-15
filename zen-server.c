@@ -11,21 +11,53 @@
 void router(ZenServer* server, char* message, char* response) {
   int result;
 
-  if(strncmp("GET", message, 3) == 0)
-  {
-    result = zen_get(server, (char*)"test_key", response);
+  const char* separator = " ";
+
+  char* action;
+  char* key;
+  char* value;
+
+  action = strtok(message, separator);
+  key    = strtok(NULL, separator);
+  value  = strtok(NULL, separator);
+
+  if(action == NULL) {
+    sprintf(response, "Invalid");
+
+    return;
   }
-  else if(strncmp("PUT", message, 3) == 0)
+
+  printf("action: %s, key: %s\n", action, key);
+
+  if(strcmp(action, "GET") == 0)
   {
-    result = zen_put(server, (char*)"test_key", (char*)"test_value", response);
+    result = zen_get(server, g_strstrip(key), response);
   }
-  else if(strncmp("DELETE", message, 6) == 0)
+  else if(strcmp(action, "PUT") == 0)
   {
-    result = zen_delete(server, (char*)"test_key", response);
+    printf("value: %s\n", value);
+
+    result = zen_put(server, g_strstrip(key), g_strstrip(value), response);
+
+    if(result == TRUE) {
+      sprintf(response, "Ok");
+    }
   }
-  else if(strncmp("EXISTS?", message, 7) == 0)
+  else if(strcmp(action, "DELETE") == 0)
   {
-    result = zen_exists(server, (char*)"test_key", response);
+    result = zen_delete(server, g_strstrip(key), response);
+
+    if(result == TRUE) {
+      sprintf(response, "Ok");
+    }
+  }
+  else if(strcmp(action, "EXISTS") == 0)
+  {
+    result = zen_exists(server, g_strstrip(key), response);
+
+    if(result == TRUE) {
+      sprintf(response, "Ok");
+    }
   }
 
   if(result == FALSE) {
