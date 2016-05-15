@@ -28,14 +28,14 @@ int main(int argc, char *argv[])
     // Connect to remote server
     if (connect(socket_desc , (struct sockaddr *)&server , sizeof(server)) < 0)
     {
-        printf("Connect error: Could not connect to meow://%s:%d\n", ADDRESS, PORT);
+        printf("Connect error: Could not connect to zen://%s:%d\n", ADDRESS, PORT);
         return 1;
     }
 
     puts("Connected\n");
 
     // Send some data
-    message = (char *)("EXISTS? meow_key");
+    message = (char *)("EXISTS? zen_key");
     if(send(socket_desc, message, strlen(message), 0) < 0)
     {
         puts("Send failed");

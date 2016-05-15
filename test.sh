@@ -4,7 +4,7 @@ rm -rf "build/test"
 mkdir -p "build/test"
 
 ./build.sh
-build/meow &
+build/zen &
 
 trap 'kill $(jobs -p)' EXIT
 

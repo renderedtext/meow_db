@@ -1,3 +1,3 @@
-# Meow DB
+# Zen DB
 
-![logo](https://github.com/renderedtext/meow_db/blob/master/logo.jpg)
+![logo](https://github.com/renderedtext/zen_db/blob/master/logo.jpg)

@@ -2,4 +2,4 @@
 
 mkdir -p build
 
-gcc -Wall lib/*.c meow.c -I headers -o build/meow `pkg-config --cflags --libs glib-2.0`
+gcc -Wall lib/*.c zen.c -I headers -o build/zen `pkg-config --cflags --libs glib-2.0`

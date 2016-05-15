@@ -12,8 +12,8 @@ void free_data(gpointer data) {
   free(data);
 }
 
-MeowServer* init_server(char* address, int port) {
-  MeowServer* server = malloc(sizeof(struct meow_server));
+ZenServer* init_server(char* address, int port) {
+  ZenServer* server = malloc(sizeof(struct zen_server));
 
   GHashTable* memory_store = g_hash_table_new_full(g_str_hash,  /* Hash function  */
                                                    g_str_equal, /* Comparator     */
@@ -27,7 +27,7 @@ MeowServer* init_server(char* address, int port) {
   return server;
 }
 
-int start_server(MeowServer* server, void (*handler)(MeowServer*, char*, char*)) {
+int start_server(ZenServer* server, void (*handler)(ZenServer*, char*, char*)) {
     int socket_desc;
     int new_socket;
     int c;
@@ -44,7 +44,7 @@ int start_server(MeowServer* server, void (*handler)(MeowServer*, char*, char*))
     socket_desc = socket(AF_INET, SOCK_STREAM, 0);
     if (socket_desc == -1)
     {
-        printf("Could not create socket meow://%s:%d", server->address, server->port);
+        printf("Could not create socket zen://%s:%d", server->address, server->port);
         return 1;
     }
 
@@ -56,14 +56,14 @@ int start_server(MeowServer* server, void (*handler)(MeowServer*, char*, char*))
     // Bind
     if(bind(socket_desc, (struct sockaddr *)&tcp_server, sizeof(tcp_server)) < 0)
     {
-        printf("Could not bind to meow://%s:%d", server->address, server->port);
+        printf("Could not bind to zen://%s:%d", server->address, server->port);
         return 1;
     }
 
     // Listen
     listen(socket_desc, 3);
 
-    printf("Server is listening on meow://%s:%d\n", server->address, server->port);
+    printf("Server is listening on zen://%s:%d\n", server->address, server->port);
 
     // Accept and incoming connection
     puts("Waiting for incoming connections...");

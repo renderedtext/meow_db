@@ -3,7 +3,7 @@
 #include "server.h"
 #include "api.h"
 
-int meow_get(MeowServer* server, char* key, char* response) {
+int zen_get(ZenServer* server, char* key, char* response) {
   char* value = g_hash_table_lookup(server->memory_store, key);
 
   strcpy(response, value);
@@ -15,14 +15,14 @@ int meow_get(MeowServer* server, char* key, char* response) {
   }
 }
 
-int meow_put(MeowServer* server, char* key, char* value, char* response) {
+int zen_put(ZenServer* server, char* key, char* value, char* response) {
   return g_hash_table_insert(server->memory_store, key, value);
 }
 
-int meow_delete(MeowServer* server, char* key, char* response) {
+int zen_delete(ZenServer* server, char* key, char* response) {
   return g_hash_table_remove(server->memory_store, key);
 }
 
-int meow_exists(MeowServer* server, char* key, char* response) {
+int zen_exists(ZenServer* server, char* key, char* response) {
   return g_hash_table_contains(server->memory_store, key);
 }
