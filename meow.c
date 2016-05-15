@@ -28,7 +28,7 @@ void router(MeowServer* server, char* message, char* response) {
     result = meow_exists(server, (char*)"test_key", response);
   }
 
-  if(result < 0) {
+  if(result == FALSE) {
     sprintf(response, "Fail");
   }
 }
