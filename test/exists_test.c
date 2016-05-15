@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     puts("Reply received\n");
     puts(server_reply);
 
-    if(strncmp(server_reply, "No. Meow!", message_length) == 0) {
+    if(strncmp(server_reply, "Fail", message_length) == 0) {
       return 0;
     } else {
       return 1;
