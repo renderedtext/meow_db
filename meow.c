@@ -38,11 +38,7 @@ const int PORT = 6666;
 
 int main(int argc, char *argv[])
 {
-  MeowServer server;
+  MeowServer* server = init_server((char*)ADDRESS, PORT);
 
-  server.address = (char*)ADDRESS;
-  server.port = PORT;
-  server.memory_store = NULL;
-
-  return start_server(&server, router);
+  return start_server(server, router);
 }

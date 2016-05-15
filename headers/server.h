@@ -11,6 +11,8 @@ struct meow_server {
 
 typedef struct meow_server MeowServer;
 
+MeowServer* init_server(char* address, int port);
+
 int start_server(MeowServer* server, void (*handler)(MeowServer*, char*, char*));
 
 #endif // SERVER_H_

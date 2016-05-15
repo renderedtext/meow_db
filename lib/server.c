@@ -7,6 +7,16 @@
 
 #include "server.h"
 
+MeowServer* init_server(char* address, int port) {
+  MeowServer* server = malloc(sizeof(struct meow_server));
+
+  server->address = address;
+  server->port = port;
+  server->memory_store = NULL;
+
+  return server;
+}
+
 int start_server(MeowServer* server, void (*handler)(MeowServer*, char*, char*)) {
     int socket_desc;
     int new_socket;
