@@ -2,4 +2,4 @@
 
 mkdir -p build
 
-g++ -Wall lib/*.c meow.c -I headers -o build/meow
+gcc `pkg-config --cflags --libs glib-2.0` -Wall lib/*.c meow.c -I headers -o build/meow

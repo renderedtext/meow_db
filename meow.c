@@ -42,6 +42,7 @@ int main(int argc, char *argv[])
 
   server.address = (char*)ADDRESS;
   server.port = PORT;
+  server.memory_store = NULL;
 
   return start_server(&server, router);
 }
